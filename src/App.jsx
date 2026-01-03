@@ -13,10 +13,14 @@ import { DoctorContext } from './context/DoctorContext';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorAppointments from './pages/Doctor/DoctorAppointments';
 import DoctorProfile from './pages/Doctor/DoctorProfile';
+import { Navigate } from 'react-router-dom';
 
 const App = () => {
   const {aToken} = useContext(AdminContext)
   const {dToken} = useContext(DoctorContext);
+  const isAdmin = Boolean(aToken);
+  const isDoctor = Boolean(dToken);
+
   return aToken || dToken ? (
     <div className='bg-[#F9F9FD]'>
       <ToastContainer/>
@@ -25,7 +29,11 @@ const App = () => {
         <Sidebar/>
         <Routes>
           {/* Admin Routes */}
-          <Route path='/' element={<></>}/>
+          <Route path='/' element={
+           isAdmin 
+           ? <Navigate to="/admin-dashboard" />
+           : <Navigate to="/doctor-dashboard" />
+          }/>
           {/* <Route path='/' element={<Dashboard/>}/> */}
           <Route path='/admin-dashboard' element={<Dashboard/>}/>
           <Route path='/all-appointments' element={<AllApointments/>}/>
